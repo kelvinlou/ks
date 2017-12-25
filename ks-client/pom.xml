@@ -16,6 +16,10 @@
 
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.infi</groupId>
+            <artifactId>ks-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 </project>
