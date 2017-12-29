@@ -1,4 +1,4 @@
-package com.infi;
+package com.infi.server;
 
 import org.junit.Test;
 import org.pcap4j.core.BpfProgram;

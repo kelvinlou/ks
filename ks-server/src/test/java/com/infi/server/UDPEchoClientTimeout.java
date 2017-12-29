@@ -1,4 +1,4 @@
-package com.infi;
+package com.infi.server;
 
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;

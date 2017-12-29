@@ -28,6 +28,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
         <pcap4j.version>1.7.2</pcap4j.version>
+        <netty.version>4.1.19.Final</netty.version>
 	</properties>
 
 	<dependencies>
@@ -47,11 +48,18 @@
             <artifactId>pcap4j-core</artifactId>
             <version>${pcap4j.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.pcap4j</groupId>
             <artifactId>pcap4j-packetfactory-static</artifactId>
             <version>${pcap4j.version}</version>
         </dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>${netty.version}</version>
+		</dependency>
 
 	</dependencies>
 

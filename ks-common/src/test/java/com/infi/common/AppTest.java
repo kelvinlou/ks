@@ -1,4 +1,4 @@
-package com.infi;
+package com.infi.common;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.infi;
+package com.infi.server;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
