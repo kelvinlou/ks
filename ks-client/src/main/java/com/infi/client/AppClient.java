@@ -8,31 +8,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
-import io.netty.channel.EventLoop;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.util.CharsetUtil;
 
 
 @SpringBootApplication
-public class App {
-    private final static Logger LOG = LoggerFactory.getLogger(App.class);
+public class AppClient {
+    private final static Logger LOG = LoggerFactory.getLogger(AppClient.class);
     /** 用于分配处理业务线程的线程组个数 */
     protected static final int BIZGROUPSIZE = Runtime.getRuntime().availableProcessors() * 2; // 默认
     /** 业务出现线程大小 */
@@ -43,13 +38,16 @@ public class App {
     public static Channel tcpChannel;
     public static Channel udpChannel;
 
+    public static String host = "127.0.0.1";
+    public static int udpPort = 9987;
+    public static int tcpPort = 9988;
+    public static int serverUdpPort = 150;
+
     public static void main(String[] args) {
-        int udpPort = 8780;
-        int tcpPort = 8091;
-        SpringApplication.run(App.class, args);
-        App app = new App();
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-//        executorService.submit(()-> app.runUDP(udpPort));
+        SpringApplication.run(AppClient.class, args);
+        AppClient app = new AppClient();
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+        executorService.submit(()-> app.runUDP(udpPort));
         executorService.submit(()-> app.runTCP(tcpPort));
 
     }
@@ -87,7 +85,9 @@ public class App {
         });
 
         try {
-            tcpChannel = b.bind(port).sync().channel();
+            ChannelFuture f = b.bind(port).sync();
+            tcpChannel = f.channel();
+            tcpChannel.closeFuture().sync();
         } catch (InterruptedException e) {
             LOG.error("TCP服务器启动失败:{}", e);
         } finally {
