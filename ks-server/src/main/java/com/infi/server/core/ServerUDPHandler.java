@@ -5,6 +5,7 @@ import com.infi.server.AppServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetSocketAddress;
 import java.util.concurrent.ThreadLocalRandom;
 
 import io.netty.buffer.ByteBuf;
@@ -27,9 +28,9 @@ public class ServerUDPHandler extends SimpleChannelInboundHandler<DatagramPacket
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket packet) throws Exception {
         LOG.info("ServerUDPHandler receive packet:{}, sender is:{}", packet, packet.sender());
-        ByteBuf buffer = AppServer.tcpChannel.alloc().buffer();
-        buffer.writeBytes("aaa".getBytes());
-        AppServer.tcpChannel.writeAndFlush(buffer);
+//        ByteBuf buffer = AppServer.tcpChannel.alloc().buffer();
+//        buffer.writeBytes(packet.content());
+        AppServer.tcpChannel.writeAndFlush(Unpooled.copiedBuffer(packet.content()));
     }
 
     @Override
